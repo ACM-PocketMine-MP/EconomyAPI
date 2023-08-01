@@ -38,12 +38,13 @@ use onebone\economyapi\event\money\ReduceMoneyEvent;
 use onebone\economyapi\event\money\AddMoneyEvent;
 use onebone\economyapi\event\money\MoneyChangedEvent;
 use onebone\economyapi\event\account\CreateAccountEvent;
+use onebone\economyapi\scorehud\EcoAPIScore;
 use onebone\economyapi\task\SaveTask;
+use pocketmine\Server;
 
-class EconomyAPI extends PluginBase implements Listener
-{
-    const API_VERSION = 3;
-    const PACKAGE_VERSION = "5.7";
+class EconomyAPI extends PluginBase implements Listener{
+    const API_VERSION = 5;
+    const PACKAGE_VERSION = "6.0";
 
     const RET_NO_ACCOUNT = -3;
     const RET_CANCELLED = -2;
@@ -123,9 +124,26 @@ class EconomyAPI extends PluginBase implements Listener
         return false;
     }
 
-    public function getMonetaryUnit(): string
-    {
+    public function getMonetaryUnit(): string{
         return $this->getConfig()->get("monetary-unit");
+    }
+
+    /**
+     * by fernanACM
+     * @return boolean
+     */
+    public function scoreHudExists(): bool{
+        if(($scorehud = Server::getInstance()->getPluginManager()->getPlugin("ScoreHud")) !== null){
+            $version = $scorehud->getDescription()->getVersion();
+            if(version_compare($version, "6.0.0", ">=")){
+                if(version_compare($version, "6.1.0", "<")){
+                    EconomyAPI::getInstance()->getLogger()->warning("Outdated version of ScoreHud (v" . $version . ") detected, requires >= v6.1.0. Integration disabled.");
+                    return false;
+                }
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -339,6 +357,10 @@ class EconomyAPI extends PluginBase implements Listener
         }
 
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
+        # ScoreHud
+        if($this->scoreHudExists()){
+            $this->getServer()->getPluginManager()->registerEvents(new EcoAPIScore, $this);
+        }
     }
 
     private function registerPermissions(): void
