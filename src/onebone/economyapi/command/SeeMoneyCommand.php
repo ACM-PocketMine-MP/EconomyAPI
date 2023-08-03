@@ -30,7 +30,7 @@ class SeeMoneyCommand extends Command
         }
 
         $player = array_shift($params);
-        if (trim($player) === "") {
+        if(trim($player ?? "") === ""){
             $sender->sendMessage(TextFormat::RED . "Usage: " . $this->getUsage());
             return true;
         }

@@ -31,8 +31,7 @@ use onebone\economyapi\task\SortTask;
 class TopMoneyCommand extends Command
 {
 
-    public function __construct(private EconomyAPI $plugin)
-    {
+    public function __construct(private EconomyAPI $plugin){
         $desc = $plugin->getCommandMessage("topmoney");
         parent::__construct("topmoney", $desc["description"], $desc["usage"]);
 
@@ -41,8 +40,7 @@ class TopMoneyCommand extends Command
         $this->plugin = $plugin;
     }
 
-    public function execute(CommandSender $sender, string $label, array $params): bool
-    {
+    public function execute(CommandSender $sender, string $label, array $params): bool{
         if (!$this->plugin->isEnabled()) return false;
         if (!$this->testPermission($sender)) return false;
 

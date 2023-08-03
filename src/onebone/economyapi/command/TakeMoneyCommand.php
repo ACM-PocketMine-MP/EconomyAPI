@@ -12,8 +12,7 @@ use onebone\economyapi\EconomyAPI;
 class TakeMoneyCommand extends Command
 {
 
-    public function __construct(private EconomyAPI $plugin)
-    {
+    public function __construct(private EconomyAPI $plugin){
         $desc = $plugin->getCommandMessage("takemoney");
         parent::__construct("takemoney", $desc["description"], $desc["usage"]);
 
@@ -22,8 +21,7 @@ class TakeMoneyCommand extends Command
         $this->plugin = $plugin;
     }
 
-    public function execute(CommandSender $sender, string $label, array $params): bool
-    {
+    public function execute(CommandSender $sender, string $label, array $params): bool{
         if (!$this->plugin->isEnabled()) return false;
         if (!$this->testPermission($sender)) {
             return false;

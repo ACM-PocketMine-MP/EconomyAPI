@@ -17,14 +17,14 @@ class EcoAPIScore implements Listener{
      * @return void
      */
     public function onMoneyChange(MoneyChangedEvent $event): void{
-		$username = $event->getUsername();
-		if(is_null($username)){
-			return;
-		}
-		$player = EconomyAPI::getInstance()->getServer()->getPlayerByPrefix($username);
-		if($player instanceof Player && $player->isOnline()){
-			(new PlayerTagUpdateEvent($player, new ScoreTag("ecoapiscore.money", (string)$event->getMoney())))->call();
-		}
+        $username = $event->getUsername();
+        if(is_null($username)){
+            return;
+        }
+        $player = EconomyAPI::getInstance()->getServer()->getPlayerByPrefix($username);
+        if($player instanceof Player && $player->isOnline()){
+            (new PlayerTagUpdateEvent($player, new ScoreTag("ecoapiscore.money", (string)$event->getMoney())))->call();
+        }
 	}
 
     /**

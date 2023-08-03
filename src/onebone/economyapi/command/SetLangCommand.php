@@ -29,7 +29,7 @@ class SetLangCommand extends Command
         }
 
         $lang = array_shift($params);
-        if (trim($lang) === "") {
+        if(trim($lang ?? "") === ""){
             $sender->sendMessage(TextFormat::RED . "Usage: " . $this->getUsage());
             return true;
         }
